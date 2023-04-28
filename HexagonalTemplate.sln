@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexagonalTemplate", "HexagonalTemplate\HexagonalTemplate.csproj", "{495739F5-FEBE-42DB-9E6D-2CE1D8F0319D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{495739F5-FEBE-42DB-9E6D-2CE1D8F0319D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495739F5-FEBE-42DB-9E6D-2CE1D8F0319D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495739F5-FEBE-42DB-9E6D-2CE1D8F0319D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495739F5-FEBE-42DB-9E6D-2CE1D8F0319D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC63F41C-366C-45C7-A898-7819D739EF1B}
+	EndGlobalSection
+EndGlobal
