@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HexagonalTemplate.Models;
+using HexagonalTemplate.Ports;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HexagonalTemplate.Adapters.HttpsAdapter
 {
@@ -6,15 +8,26 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
     [Route("[controller]")]
     public class UserHttpsAdapter : ControllerBase
     {
-        [HttpPost("/Register",Name = "Register")]
+        protected IRegisterUseCase registerUseCase;
 
-        try
+        public UserHttpsAdapter(IRegisterUseCase registerUseCase)
         {
-
+            this.registerUseCase = registerUseCase;
         }
-        catch (Exception e)
-        {
 
+        [HttpPost("/Register", Name = "Register")]
+
+        public ActionResult Register(UserDto userDto)
+        {
+            try
+            {
+                var userRequestDto = registerUseCase.Register(userDto);
+                return Ok(userRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

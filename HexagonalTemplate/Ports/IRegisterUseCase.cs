@@ -4,6 +4,6 @@ namespace HexagonalTemplate.Ports
 {
     public interface IRegisterUseCase
     {
-        public UserDto Register(UserDto userRequest);
+        public UserDto Register(UserDto userDto);
     }
 }
