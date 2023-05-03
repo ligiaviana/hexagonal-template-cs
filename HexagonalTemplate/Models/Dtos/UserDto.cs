@@ -1,4 +1,4 @@
-﻿namespace HexagonalTemplate.Models
+﻿namespace HexagonalTemplate.Models.Dtos
 {
     public class UserDto
     {

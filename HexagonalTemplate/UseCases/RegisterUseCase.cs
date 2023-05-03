@@ -1,32 +1,35 @@
-﻿using HexagonalTemplate.Models;
-using HexagonalTemplate.Ports;
+﻿using HexagonalTemplate.Adapters.SqliteAdapters;
+using HexagonalTemplate.Models;
+using HexagonalTemplate.Models.Dtos;
+using HexagonalTemplate.Ports.Ins;
+using HexagonalTemplate.Ports.Outs;
 
 namespace HexagonalTemplate.UseCases
 {
     public class RegisterUseCase : IRegisterUseCase
     {
+        IUserCore userCore;
+        IUserRepository userRepository;
+
+        public RegisterUseCase(IUserCore userCore, IUserRepository userRepository)
+        {
+            this.userCore = userCore;
+            this.userRepository = userRepository;
+        }
+
         public UserDto Register(UserDto userDto)
         {
-            if (userDto == null)
-            {
-                throw new ArgumentNullException(nameof(userDto));
-            }
+            userCore.ValidateUser(userDto);
+            Log(userDto.Email);
+            userRepository.Create(userDto);
 
-            var newUser = new User
-            {
-                Email = userDto.Email,
-                Password = userDto.Password
-            };
-
-            Console.WriteLine($"Successfuly registered user: {newUser.Email}");
-
-            var createdUserDto = new UserDto
-            {
-                Email = newUser.Email,
-                Password = newUser.Password
-            };
-
-            return createdUserDto;
+            return userDto;
         }
+
+        private void Log(string msg)
+        {
+            Console.WriteLine($"Successfuly registered user: {msg}");
+        }
+
     }
 }

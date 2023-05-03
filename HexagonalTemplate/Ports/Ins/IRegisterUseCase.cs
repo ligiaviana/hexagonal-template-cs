@@ -1,6 +1,6 @@
-﻿using HexagonalTemplate.Models;
+﻿using HexagonalTemplate.Models.Dtos;
 
-namespace HexagonalTemplate.Ports
+namespace HexagonalTemplate.Ports.Ins
 {
     public interface IRegisterUseCase
     {
