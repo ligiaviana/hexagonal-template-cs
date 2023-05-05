@@ -5,5 +5,7 @@ namespace HexagonalTemplate.Ports.Ins
     public interface IUserCore
     {
         public void ValidateUser(UserDto userDto);
+
+        public void ValidatePassword(UserDto userDto);
     }
 }

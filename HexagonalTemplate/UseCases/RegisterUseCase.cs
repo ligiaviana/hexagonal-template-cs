@@ -10,25 +10,23 @@ namespace HexagonalTemplate.UseCases
     {
         IUserCore userCore;
         IUserRepository userRepository;
+        ILogCore logCore;
 
-        public RegisterUseCase(IUserCore userCore, IUserRepository userRepository)
+        public RegisterUseCase(IUserCore userCore, IUserRepository userRepository, ILogCore logCore)
         {
             this.userCore = userCore;
             this.userRepository = userRepository;
+            this.logCore = logCore;
         }
 
         public UserDto Register(UserDto userDto)
         {
             userCore.ValidateUser(userDto);
-            Log(userDto.Email);
+            userCore.ValidatePassword(userDto);
+            logCore.Log(userDto.Email);
             userRepository.Create(userDto);
 
             return userDto;
-        }
-
-        private void Log(string msg)
-        {
-            Console.WriteLine($"Successfuly registered user: {msg}");
         }
 
     }
