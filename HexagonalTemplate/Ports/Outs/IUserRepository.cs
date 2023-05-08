@@ -5,7 +5,6 @@ namespace HexagonalTemplate.Ports.Outs
     public interface IUserRepository
     {
         UserDto Create(UserDto userDto);
-
-        string FindByEmail(UserDto userDto);
+        public UserDto FindByEmail(UserDto userDto);
     }
 }

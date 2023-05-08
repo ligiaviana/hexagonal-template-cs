@@ -10,19 +10,27 @@ namespace HexagonalTemplate.Cores
 {
     public class JwtCore : IJwtCore
     {
-        private readonly string _jwtSecretKey;
+        //private readonly string _jwtSecretKey;
+        private readonly byte[] _jwtSecretKey;
         private readonly double _jwtExpirationInMinutes;
 
-        public JwtCore(string jwtSecretKey, string jwtExpirationInMinutes)
+        public JwtCore(string jwtSecretKey, double jwtExpirationInMinutes)
         {
-            _jwtSecretKey = jwtSecretKey;
-            _jwtExpirationInMinutes = Double.Parse(jwtExpirationInMinutes);
+            //_jwtSecretKey = jwtSecretKey;
+            //_jwtExpirationInMinutes = jwtExpirationInMinutes;
+            _jwtSecretKey = Encoding.ASCII.GetBytes(jwtSecretKey);
+            _jwtExpirationInMinutes = jwtExpirationInMinutes;
         }
         public string GenerateToken(UserDto userDto)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_jwtSecretKey);
+            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
+            var key = new byte[128 / 8];
+            rng.GetBytes(key);
+
+            //var key = Encoding.ASCII.GetBytes(_jwtSecretKey);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
