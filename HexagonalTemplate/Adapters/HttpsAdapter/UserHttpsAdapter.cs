@@ -1,5 +1,6 @@
 ﻿using HexagonalTemplate.Models.Dtos;
 using HexagonalTemplate.Ports.Ins;
+using HexagonalTemplate.Ports.Outs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HexagonalTemplate.Adapters.HttpsAdapter
@@ -10,11 +11,35 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
     {
         protected IRegisterUseCase registerUseCase;
         protected ILoginUseCase loginUseCase;
+        protected IUserRepository userRepository;
 
-        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase)
+        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase, IUserRepository userRepository)
         {
             this.registerUseCase = registerUseCase;
             this.loginUseCase = loginUseCase;
+            this.userRepository = userRepository;
+        }
+
+
+        [HttpGet("{email}", Name = "GetUser")]
+
+        public ActionResult GetUser(string email)
+        {
+            try
+            {
+                var userDto = userRepository.FindByEmail(new UserDto {  Email = email });
+
+                if (userDto == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(userDto);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpPost("/Register", Name = "Register")]
