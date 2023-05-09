@@ -20,7 +20,7 @@ namespace HexagonalTemplate.UseCases
         {
             userCore.ValidateUser(userDto);
             var foundUser = userRepository.FindByEmail(userDto);
-            var passwordDb = foundUser.Password; 
+            var passwordDb = foundUser.Password;
             jwtCore.Match(userDto.Password, passwordDb);
             var token = jwtCore.GenerateToken(userDto);
 
