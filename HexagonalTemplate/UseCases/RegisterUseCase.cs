@@ -21,6 +21,9 @@ namespace HexagonalTemplate.UseCases
 
         public UserDto Register(UserDto userDto)
         {
+            if (userDto == null)
+                throw new ArgumentNullException(nameof(userDto));
+
             userCore.ValidateUser(userDto);
             userCore.ValidatePassword(userDto);
             logCore.Log(userDto.Email);
