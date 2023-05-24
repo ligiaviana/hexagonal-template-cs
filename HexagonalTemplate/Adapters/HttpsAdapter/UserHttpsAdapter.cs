@@ -1,4 +1,4 @@
-﻿using HexagonalTemplate.Models.Dtos;
+﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
 using Microsoft.AspNetCore.Mvc;
@@ -12,29 +12,31 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
         protected IRegisterUseCase registerUseCase;
         protected ILoginUseCase loginUseCase;
         protected IUserRepository userRepository;
+        protected IFindUseCase findUseCase;
 
-        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase, IUserRepository userRepository)
+        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase, IUserRepository userRepository, IFindUseCase findUseCase)
         {
             this.registerUseCase = registerUseCase;
             this.loginUseCase = loginUseCase;
             this.userRepository = userRepository;
+            this.findUseCase = findUseCase;
         }
 
 
-        [HttpGet("{email}", Name = "GetUser")]
+        [HttpGet("/GetById", Name = "GetById")]
 
-        public ActionResult GetUser(string email)
+        public ActionResult GetUserByEmail(string email)
         {
             try
             {
-                var userDto = userRepository.FindByEmail(new UserDto {  Email = email });
+                var user = findUseCase.GetUserByEmail(email);
 
-                if (userDto == null)
+                if (user == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(userDto);
+                return Ok(user);
             }
             catch (Exception e)
             {
@@ -44,12 +46,12 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
 
         [HttpPost("/Register", Name = "Register")]
 
-        public ActionResult Register(UserDto userDto)
+        public ActionResult Register(UserEntity userEntity)
         {
             try
             {
-                var userRequestDto = registerUseCase.Register(userDto);
-                return Ok(userRequestDto);
+                var userRequestEntity = registerUseCase.Register(userEntity);
+                return Ok(userRequestEntity);
             }
             catch (ArgumentNullException ane)
             {
@@ -63,11 +65,11 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
 
         [HttpPost("/Login", Name = "Login")]
 
-        public ActionResult Login(UserDto userDto)
+        public ActionResult Login(UserEntity userEntity)
         {
             try
             {
-                var result = loginUseCase.Login(userDto);
+                var result = loginUseCase.Login(userEntity);
                 return Ok(result);
 
             }
