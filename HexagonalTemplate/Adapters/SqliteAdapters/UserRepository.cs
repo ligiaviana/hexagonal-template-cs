@@ -1,48 +1,27 @@
-﻿using HexagonalTemplate.Models.Dtos;
-using HexagonalTemplate.Ports.Ins;
+﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Outs;
-using Microsoft.EntityFrameworkCore;
 
 namespace HexagonalTemplate.Adapters.SqliteAdapters
 {
-    public class UserDbContext : DbContext
-    {
-        public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
-        {
-        }
-
-        public DbSet<UserDto> Users { get; set; }
-    }
     public class UserRepository : IUserRepository
     {
-        private readonly UserDbContext _context;
-        public UserRepository(UserDbContext context)
+        private readonly HexagonalDbContext _context;
+        public UserRepository(HexagonalDbContext context)
         {
             _context = context;
         }
-        public UserDto Create(UserDto userDto)
+        public UserEntity Create(UserEntity userEntity)
         {
-            if (userDto == null)
-            {
-                throw new ArgumentNullException(nameof(userDto));
-            }
-
-            _context.Users.Add(userDto);
+            _context.Users.Add(userEntity);
             _context.SaveChanges();
 
-            return userDto;
+            return userEntity;
         }
 
-        public UserDto FindByEmail(UserDto userDto)
+        public UserEntity FindByEmail(UserEntity userEntity)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == userDto.Email);
-            if (user == null) return null;
-
-            return new UserDto
-            {
-                Email = user.Email,
-                Password = user.Password,
-            };
+            var user = _context.Users.FirstOrDefault(u => u.Email == userEntity.Email);
+            return user;
         }
 
     }
