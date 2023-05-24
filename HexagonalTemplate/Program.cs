@@ -16,10 +16,11 @@ builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<ILogCore, LogCore>();
 builder.Services.AddScoped<IUserCore, UserCore>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IFindUseCase, FindUseCase>();
 
 //builder.Configuration.AddJsonFile("appsettings.json");
 
-builder.Services.AddDbContext<UserDbContext>(options =>
+builder.Services.AddDbContext<HexagonalDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 IConfiguration configuration = new ConfigurationBuilder()
