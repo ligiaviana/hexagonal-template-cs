@@ -6,7 +6,7 @@ namespace HexagonalTemplate.Cores
     {
         public void Log(string msg)
         {
-            Console.WriteLine($"Successfuly registered user: {msg}");
+            Console.WriteLine(msg);
         }
     }
 }
