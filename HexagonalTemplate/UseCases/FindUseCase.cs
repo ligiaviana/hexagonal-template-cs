@@ -14,8 +14,8 @@ namespace HexagonalTemplate.UseCases
         }
         public UserEntity GetUserByEmail(string email)
         {
-            var userEntity = new UserEntity { Email = email };
-            var user = userRepository.FindByEmail(userEntity);
+            //var userEntity = new UserEntity { Email = email };
+            var user = userRepository.FindByEmail(email);
             return user;
         }
     }

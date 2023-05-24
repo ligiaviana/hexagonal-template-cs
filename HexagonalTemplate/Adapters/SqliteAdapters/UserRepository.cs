@@ -18,9 +18,9 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
             return userEntity;
         }
 
-        public UserEntity FindByEmail(UserEntity userEntity)
+        public UserEntity FindByEmail(string email)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == userEntity.Email);
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
             return user;
         }
 
