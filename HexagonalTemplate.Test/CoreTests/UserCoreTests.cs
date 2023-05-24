@@ -1,7 +1,7 @@
 ﻿using HexagonalTemplate.Cores;
 using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
-using Xunit.Sdk;
+using Xunit;
 
 namespace HexagonalTemplate.Test.CoreTests
 {
@@ -30,20 +30,10 @@ namespace HexagonalTemplate.Test.CoreTests
             var userEntity = CreateUserEntity("test@example.com", "Password123");
 
             // Act
-            Action act = () =>
-            {
-                try
-                {
-                    userCore.ValidateUser(userEntity);
-                }
-                catch (Exception ex)
-                {
-                    throw new XunitException($"Expected no exception to be thrown, but found {ex.GetType()}: \"{ex.Message}\"");
-                }
-            };
+            void Act() => userCore.ValidateUser(userEntity);
 
             // Assert
-            act.Invoke();
+            AssertNoExceptionThrown(Act);
         }
 
         [Fact]
@@ -53,43 +43,14 @@ namespace HexagonalTemplate.Test.CoreTests
             UserEntity userEntity = null;
 
             // Act
-            Action validateUserAction = () =>
+            void Act()
             {
-                try
-                {
-                    userCore.ValidateUser(userEntity);
-                }
-                catch (ArgumentNullException ex)
-                {
-                    if (ex.ParamName != "userEntity")
-                    {
-                        throw new XunitException($"Expected ArgumentNullException with parameter name \"userEntity\", but found \"{ex.ParamName}\"");
-                    }
-                    return;
-                }
-                throw new XunitException("Expected ArgumentNullException with parameter name \"userEntity\", but no exception was thrown");
-            };
-
-            Action validatePasswordAction = () =>
-            {
-                try
-                {
-                    userCore.ValidatePassword(userEntity);
-                }
-                catch (ArgumentNullException ex)
-                {
-                    if (ex.ParamName != "userEntity")
-                    {
-                        throw new XunitException($"Expected ArgumentNullException with parameter name \"userEntity\", but found \"{ex.ParamName}\"");
-                    }
-                    return;
-                }
-                throw new XunitException("Expected ArgumentNullException with parameter name \"userEntity\", but no exception was thrown");
-            };
+                Assert.Throws<ArgumentNullException>("userEntity", () => userCore.ValidateUser(userEntity));
+                Assert.Throws<ArgumentNullException>("userEntity", () => userCore.ValidatePassword(userEntity));
+            }
 
             // Assert
-            validateUserAction.Invoke();
-            validatePasswordAction.Invoke();
+            AssertNoExceptionThrown(Act);
         }
 
         [Theory]
@@ -103,25 +64,10 @@ namespace HexagonalTemplate.Test.CoreTests
             var userEntity = CreateUserEntity("test@example.com", password);
 
             // Act
-            Action act = () =>
-            {
-                try
-                {
-                    userCore.ValidatePassword(userEntity);
-                }
-                catch (ArgumentException ex)
-                {
-                    if (ex.ParamName != "userEntity")
-                    {
-                        throw new XunitException($"Expected ArgumentException with parameter name \"userEntity\", but found \"{ex.ParamName}\"");
-                    }
-                    return;
-                }
-                throw new XunitException("Expected ArgumentException with parameter name \"userEntity\", but no exception was thrown");
-            };
+            void Act() => Assert.Throws<ArgumentException>("userEntity", () => userCore.ValidatePassword(userEntity));
 
             // Assert
-            act.Invoke();
+            AssertNoExceptionThrown(Act);
         }
 
         [Fact]
@@ -131,20 +77,16 @@ namespace HexagonalTemplate.Test.CoreTests
             var userEntity = CreateUserEntity("test@example.com", "Password123!");
 
             // Act
-            Action act = () =>
-            {
-                try
-                {
-                    userCore.ValidatePassword(userEntity);
-                }
-                catch (Exception ex)
-                {
-                    throw new XunitException($"Expected no exception to be thrown, but found {ex.GetType()}: \"{ex.Message}\"");
-                }
-            };
+            void Act() => userCore.ValidatePassword(userEntity);
 
             // Assert
-            act.Invoke();
+            AssertNoExceptionThrown(Act);
+        }
+
+        private static void AssertNoExceptionThrown(Action action)
+        {
+            var exception = Record.Exception(action);
+            Assert.Null(exception);
         }
     }
 }
