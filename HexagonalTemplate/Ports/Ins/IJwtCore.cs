@@ -1,4 +1,5 @@
 ﻿using HexagonalTemplate.Models.Dtos;
+using HexagonalTemplate.Models.Entities;
 
 namespace HexagonalTemplate.Ports.Ins
 {
@@ -6,6 +7,6 @@ namespace HexagonalTemplate.Ports.Ins
     {
         void Match(string passwordRequest, string passwordDb);
 
-        string GenerateToken(UserDto userDto);
+        public string GenerateToken(UserEntity userEntity);
     }
 }

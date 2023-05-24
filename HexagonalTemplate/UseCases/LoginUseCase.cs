@@ -1,4 +1,4 @@
-﻿using HexagonalTemplate.Models.Dtos;
+﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
 
@@ -16,13 +16,13 @@ namespace HexagonalTemplate.UseCases
             this.jwtCore = jwtCore;
             this.userRepository = userRepository;
         }
-        public string Login(UserDto userDto)
+        public string Login(UserEntity userEntity)
         {
-            userCore.ValidateUser(userDto);
-            var foundUser = userRepository.FindByEmail(userDto);
+            userCore.ValidateUser(userEntity);
+            var foundUser = userRepository.FindByEmail(userEntity);
             var passwordDb = foundUser.Password;
-            jwtCore.Match(userDto.Password, passwordDb);
-            var token = jwtCore.GenerateToken(userDto);
+            jwtCore.Match(userEntity.Password, passwordDb);
+            var token = jwtCore.GenerateToken(userEntity);
 
             return token;
         }

@@ -1,10 +1,9 @@
-﻿using HexagonalTemplate.Models.Dtos;
+﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System;
 
 namespace HexagonalTemplate.Cores
 {
@@ -18,7 +17,7 @@ namespace HexagonalTemplate.Cores
             _jwtSecretKey = Encoding.ASCII.GetBytes(jwtSecretKey);
             _jwtExpirationInMinutes = jwtExpirationInMinutes;
         }
-        public string GenerateToken(UserDto userDto)
+        public string GenerateToken(UserEntity userEntity)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -30,7 +29,7 @@ namespace HexagonalTemplate.Cores
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Email, userDto.Email)
+                    new Claim(ClaimTypes.Email, userEntity.Email)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtExpirationInMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
