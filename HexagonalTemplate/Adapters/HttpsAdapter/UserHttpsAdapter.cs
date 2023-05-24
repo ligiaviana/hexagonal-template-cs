@@ -30,13 +30,11 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             try
             {
                 var user = findUseCase.GetUserByEmail(email);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
                 return Ok(user);
+            }
+            catch (ArgumentNullException nf)
+            {
+                return StatusCode(404, nf.Message);
             }
             catch (Exception e)
             {
