@@ -1,6 +1,4 @@
-﻿using HexagonalTemplate.Adapters.SqliteAdapters;
-using HexagonalTemplate.Models;
-using HexagonalTemplate.Models.Dtos;
+﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
 
@@ -19,17 +17,14 @@ namespace HexagonalTemplate.UseCases
             this.logCore = logCore;
         }
 
-        public UserDto Register(UserDto userDto)
+        public UserEntity Register(UserEntity userEntity)
         {
-            if (userDto == null)
-                throw new ArgumentNullException(nameof(userDto));
+            userCore.ValidateUser(userEntity);
+            userCore.ValidatePassword(userEntity);
+            logCore.Log(userEntity.Email);
+            userRepository.Create(userEntity);
 
-            userCore.ValidateUser(userDto);
-            userCore.ValidatePassword(userDto);
-            logCore.Log(userDto.Email);
-            userRepository.Create(userDto);
-
-            return userDto;
+            return userEntity;
         }
 
     }
