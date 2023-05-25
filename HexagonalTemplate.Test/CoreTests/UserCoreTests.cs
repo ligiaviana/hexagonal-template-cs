@@ -1,6 +1,7 @@
 ﻿using HexagonalTemplate.Cores;
 using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
+using FluentAssertions;
 using Xunit;
 
 namespace HexagonalTemplate.Test.CoreTests
@@ -30,10 +31,10 @@ namespace HexagonalTemplate.Test.CoreTests
             var userEntity = CreateUserEntity("test@example.com", "Password123");
 
             // Act
-            void Act() => userCore.ValidateUser(userEntity);
+            Action act = () => userCore.ValidateUser(userEntity);
 
             // Assert
-            AssertNoExceptionThrown(Act);
+            act.Should().NotThrow();
         }
 
         [Fact]
@@ -43,14 +44,14 @@ namespace HexagonalTemplate.Test.CoreTests
             UserEntity userEntity = null;
 
             // Act
-            void Act()
-            {
-                Assert.Throws<ArgumentNullException>("userEntity", () => userCore.ValidateUser(userEntity));
-                Assert.Throws<ArgumentNullException>("userEntity", () => userCore.ValidatePassword(userEntity));
-            }
+            Action act = () => userCore.ValidateUser(userEntity);
+            Action act2 = () => userCore.ValidatePassword(userEntity);
 
             // Assert
-            AssertNoExceptionThrown(Act);
+            act.Should().Throw<ArgumentNullException>()
+                .WithParameterName("userEntity");
+            act2.Should().Throw<ArgumentNullException>()
+                .WithParameterName("userEntity");
         }
 
         [Theory]
@@ -64,10 +65,11 @@ namespace HexagonalTemplate.Test.CoreTests
             var userEntity = CreateUserEntity("test@example.com", password);
 
             // Act
-            void Act() => Assert.Throws<ArgumentException>("userEntity", () => userCore.ValidatePassword(userEntity));
+            Action act = () => userCore.ValidatePassword(userEntity);
 
             // Assert
-            AssertNoExceptionThrown(Act);
+            act.Should().Throw<ArgumentException>()
+                .WithParameterName("userEntity");
         }
 
         [Fact]
@@ -77,16 +79,10 @@ namespace HexagonalTemplate.Test.CoreTests
             var userEntity = CreateUserEntity("test@example.com", "Password123!");
 
             // Act
-            void Act() => userCore.ValidatePassword(userEntity);
+            Action act = () => userCore.ValidatePassword(userEntity);
 
             // Assert
-            AssertNoExceptionThrown(Act);
-        }
-
-        private static void AssertNoExceptionThrown(Action action)
-        {
-            var exception = Record.Exception(action);
-            Assert.Null(exception);
+            act.Should().NotThrow();
         }
     }
 }
