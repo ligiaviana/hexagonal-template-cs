@@ -13,13 +13,16 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
         protected ILoginUseCase loginUseCase;
         protected IUserRepository userRepository;
         protected IFindUseCase findUseCase;
+        protected IDeleteUseCase deleteUseCase;
 
-        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase, IUserRepository userRepository, IFindUseCase findUseCase)
+        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase, 
+            IUserRepository userRepository, IFindUseCase findUseCase, IDeleteUseCase deleteUseCase)
         {
             this.registerUseCase = registerUseCase;
             this.loginUseCase = loginUseCase;
             this.userRepository = userRepository;
             this.findUseCase = findUseCase;
+            this.deleteUseCase = deleteUseCase;
         }
 
 
@@ -82,6 +85,25 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             catch (Exception e)
             {
                 return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpDelete("/Delete", Name = "Delete")]
+
+        public IActionResult Delete(string email)
+        {
+            try
+            {
+                deleteUseCase.DeleteByEmail(email);
+                return Ok();
+            }
+            catch (ArgumentNullException nf)
+            {
+                return StatusCode(404, nf.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }

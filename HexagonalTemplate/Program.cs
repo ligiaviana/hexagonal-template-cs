@@ -17,6 +17,7 @@ builder.Services.AddScoped<ILogCore, LogCore>();
 builder.Services.AddScoped<IUserCore, UserCore>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFindUseCase, FindUseCase>();
+builder.Services.AddScoped<IDeleteUseCase, DeleteUseCase>();
 
 //builder.Configuration.AddJsonFile("appsettings.json");
 

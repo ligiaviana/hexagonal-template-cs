@@ -24,5 +24,15 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
             return user;
         }
 
+        public void DeleteByEmail(string email)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+            }
+        }
+
     }
 }
