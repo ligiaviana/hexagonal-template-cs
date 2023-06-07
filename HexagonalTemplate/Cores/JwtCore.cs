@@ -46,7 +46,7 @@ namespace HexagonalTemplate.Cores
         {
             if (passwordRequest != passwordDb)
             {
-                throw new ArgumentException("The password is invalid.");
+                throw new UnauthorizedAccessException("The password is invalid.");
             }
         }
     }
