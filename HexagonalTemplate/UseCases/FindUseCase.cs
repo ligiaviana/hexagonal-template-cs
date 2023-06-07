@@ -13,23 +13,6 @@ namespace HexagonalTemplate.UseCases
         {
             this.userRepository = userRepository;
         }
-        //public ActionResult GetUserByEmail(string email)
-        //{
-        //    try
-        //    {
-        //        var user = userRepository.FindByEmail(email);
-
-        //        if (user == null)
-        //        {
-        //            return new StatusCodeResult(404);
-        //        }
-        //        return new OkObjectResult(user);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return new StatusCodeResult(500);
-        //    }
-        //}
 
         public UserEntity GetUserByEmail(string email)
         {
