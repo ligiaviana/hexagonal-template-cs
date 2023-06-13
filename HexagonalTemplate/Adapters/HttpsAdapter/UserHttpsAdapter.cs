@@ -1,6 +1,7 @@
 ﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HexagonalTemplate.Adapters.HttpsAdapter
@@ -27,9 +28,14 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
 
 
         [HttpGet("/GetById", Name = "GetById")]
-
+      
         public ActionResult GetUserByEmail(string email)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return StatusCode(403, "Forbidden");
+            }
+
             try
             {
                 var user = findUseCase.GetUserByEmail(email);
