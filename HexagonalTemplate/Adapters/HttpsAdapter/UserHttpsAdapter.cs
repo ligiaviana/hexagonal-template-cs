@@ -31,7 +31,9 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
       
         public ActionResult GetUserByEmail(string email)
         {
-            if (!User.Identity.IsAuthenticated)
+            var token = Request.Headers["Authorization"].ToString();
+
+            if (string.IsNullOrEmpty(token))
             {
                 return StatusCode(403, "Forbidden");
             }

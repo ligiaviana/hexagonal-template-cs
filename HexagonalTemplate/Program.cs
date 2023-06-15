@@ -6,7 +6,6 @@ using HexagonalTemplate.UseCases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -22,18 +21,17 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFindUseCase, FindUseCase>();
 builder.Services.AddScoped<IDeleteUseCase, DeleteUseCase>();
 
-//builder.Configuration.AddJsonFile("appsettings.json");
-
-builder.Services.AddDbContext<HexagonalDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+// Load configuration
 IConfiguration configuration = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .Build();
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .Build();
 
 var secretKey = configuration.GetValue<string>("JwtSettings:SecretKey");
 var expirationInMinutes = configuration.GetValue<double>("JwtSettings:ExpirationInMinutes");
-builder.Services.AddScoped<IJwtCore>(x => new JwtCore(secretKey, expirationInMinutes));
+
+// Register JwtCore
+var jwtCore = new JwtCore(secretKey, expirationInMinutes);
+builder.Services.AddScoped<IJwtCore>(_ => jwtCore);
 
 builder.Services.AddControllers();
 
@@ -60,6 +58,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
+
+// Add DbContext
+builder.Services.AddDbContext<HexagonalDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
