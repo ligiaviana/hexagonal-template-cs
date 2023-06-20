@@ -3,10 +3,8 @@ using HexagonalTemplate.Cores;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
 using HexagonalTemplate.UseCases;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -26,11 +24,11 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
 
-var secretKey = configuration.GetValue<string>("JwtSettings:SecretKey");
-var expirationInMinutes = configuration.GetValue<double>("JwtSettings:ExpirationInMinutes");
+var key = configuration.GetValue<string>("Jwt:Key");
+var issuer = configuration.GetValue<string>("Jwt:Issuer");
 
 // Register JwtCore
-var jwtCore = new JwtCore(secretKey, expirationInMinutes);
+var jwtCore = new JwtCore(configuration);
 builder.Services.AddScoped<IJwtCore>(_ => jwtCore);
 
 builder.Services.AddControllers();
@@ -40,22 +38,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey))
-        };
-        options.Events = new JwtBearerEvents
-        {
-            OnChallenge = context =>
-            {
-                context.Response.StatusCode = 403;
-                context.Response.ContentType = "text/plain";
-                context.Response.WriteAsync("Forbidden");
-                context.HandleResponse();
-                return Task.CompletedTask;
-            }
+            ValidIssuer = configuration["Jwt:Issuer"],
+            ValidAudience = configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
         };
     });
 
@@ -78,10 +67,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.MapControllers();
 
 app.UseAuthentication();
 
-app.MapControllers();
+app.UseAuthorization();
 
 app.Run();

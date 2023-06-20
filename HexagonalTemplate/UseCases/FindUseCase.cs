@@ -1,7 +1,6 @@
 ﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
-using Microsoft.AspNetCore.Mvc;
 
 namespace HexagonalTemplate.UseCases
 {

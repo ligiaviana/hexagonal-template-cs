@@ -2,44 +2,31 @@
 using HexagonalTemplate.Ports.Ins;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace HexagonalTemplate.Cores
 {
     public class JwtCore : IJwtCore
     {
-        private readonly byte[] _jwtSecretKey;
-        private readonly double _jwtExpirationInMinutes;
+        private readonly IConfiguration _config;
 
-        public JwtCore(string jwtSecretKey, double jwtExpirationInMinutes)
+        public JwtCore(IConfiguration config)
         {
-            _jwtSecretKey = Encoding.ASCII.GetBytes(jwtSecretKey);
-            _jwtExpirationInMinutes = jwtExpirationInMinutes;
+            _config = config;
         }
+
         public string GenerateToken(UserEntity userEntity)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
-            var key = new byte[128 / 8];
-            rng.GetBytes(key);
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              null,
+              expires: DateTime.Now.AddMinutes(120),
+              signingCredentials: credentials);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Email, userEntity.Email)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(_jwtExpirationInMinutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return tokenString;
-
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public void Match(string passwordRequest, string passwordDb)
@@ -49,5 +36,6 @@ namespace HexagonalTemplate.Cores
                 throw new UnauthorizedAccessException("The password is invalid.");
             }
         }
+
     }
 }

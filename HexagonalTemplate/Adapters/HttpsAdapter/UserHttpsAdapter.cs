@@ -8,6 +8,7 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UserHttpsAdapter : ControllerBase
     {
         protected IRegisterUseCase registerUseCase;
@@ -26,17 +27,10 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             this.deleteUseCase = deleteUseCase;
         }
 
-
+        
         [HttpGet("/GetById", Name = "GetById")]
-      
         public ActionResult GetUserByEmail(string email)
         {
-            var token = Request.Headers["Authorization"].ToString();
-
-            if (string.IsNullOrEmpty(token))
-            {
-                return StatusCode(403, "Forbidden");
-            }
 
             try
             {
@@ -53,8 +47,8 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             }
         }
 
+        
         [HttpPost("/Register", Name = "Register")]
-
         public ActionResult Register(UserEntity userEntity)
         {
             try
@@ -72,8 +66,8 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("/Login", Name = "Login")]
-
         public ActionResult Login(UserEntity userEntity)
         {
             try
@@ -96,8 +90,9 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             }
         }
 
+        
         [HttpDelete("/Delete", Name = "Delete")]
-
+        
         public IActionResult Delete(string email)
         {
             try
