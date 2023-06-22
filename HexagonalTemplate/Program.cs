@@ -13,11 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IRegisterUseCase, RegisterUseCase>();
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
+builder.Services.AddScoped<IFindUseCase, FindUseCase>();
+builder.Services.AddScoped<IFindAppUseCase, FindAppUseCase>();
+builder.Services.AddScoped<IAppUseCase, AppUseCase>();
+builder.Services.AddScoped<IDeleteUseCase, DeleteUseCase>();
 builder.Services.AddScoped<ILogCore, LogCore>();
 builder.Services.AddScoped<IUserCore, UserCore>();
+builder.Services.AddScoped<IAppCore, AppCore>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IFindUseCase, FindUseCase>();
-builder.Services.AddScoped<IDeleteUseCase, DeleteUseCase>();
+builder.Services.AddScoped<IAppRepository, AppRepository>();
 
 // Load configuration
 IConfiguration configuration = new ConfigurationBuilder()
@@ -27,9 +31,15 @@ IConfiguration configuration = new ConfigurationBuilder()
 var key = configuration.GetValue<string>("Jwt:Key");
 var issuer = configuration.GetValue<string>("Jwt:Issuer");
 
+var appKey = configuration.GetValue<string>("AppJwt:AppKey");
+var appIssuer = configuration.GetValue<string>("AppJwt:AppIssuer");
+
 // Register JwtCore
 var jwtCore = new JwtCore(configuration);
-builder.Services.AddScoped<IJwtCore>(_ => jwtCore);
+builder.Services.AddScoped<IJwtCore>(_ => jwtCore); // -> Ao implementar appJwtCore, alterar aqui.
+
+var appJwtCore = new AppJwtCore(configuration);
+builder.Services.AddScoped<IAppJwtCore>(_ => appJwtCore);
 
 builder.Services.AddControllers();
 
@@ -50,6 +60,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Add DbContext
 builder.Services.AddDbContext<HexagonalDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<AppRepositoryDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -28,7 +28,7 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
         }
 
         
-        [HttpGet("/GetById", Name = "GetById")]
+        [HttpGet("/GetByEmail", Name = "GetByEmail")]
         public ActionResult GetUserByEmail(string email)
         {
 
