@@ -31,15 +31,8 @@ IConfiguration configuration = new ConfigurationBuilder()
 var key = configuration.GetValue<string>("Jwt:Key");
 var issuer = configuration.GetValue<string>("Jwt:Issuer");
 
-var appKey = configuration.GetValue<string>("AppJwt:AppKey");
-var appIssuer = configuration.GetValue<string>("AppJwt:AppIssuer");
-
-// Register JwtCore
 var jwtCore = new JwtCore(configuration);
-builder.Services.AddScoped<IJwtCore>(_ => jwtCore); // -> Ao implementar appJwtCore, alterar aqui.
-
-var appJwtCore = new AppJwtCore(configuration);
-builder.Services.AddScoped<IAppJwtCore>(_ => appJwtCore);
+builder.Services.AddScoped<IJwtCore>(_ => jwtCore); 
 
 builder.Services.AddControllers();
 

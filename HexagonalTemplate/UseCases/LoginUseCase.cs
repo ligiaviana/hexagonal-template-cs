@@ -1,6 +1,7 @@
 ﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace HexagonalTemplate.UseCases
 {
@@ -9,12 +10,14 @@ namespace HexagonalTemplate.UseCases
         IUserCore userCore;
         IJwtCore jwtCore;
         IUserRepository userRepository;
+        private readonly IConfiguration configuration;
 
-        public LoginUseCase(IUserCore userCore, IJwtCore jwtCore, IUserRepository userRepository)
+        public LoginUseCase(IUserCore userCore, IJwtCore jwtCore, IUserRepository userRepository, IConfiguration configuration)
         {
             this.userCore = userCore;
             this.jwtCore = jwtCore;
             this.userRepository = userRepository;
+            this.configuration = configuration;
         }
         public string Login(UserEntity userEntity)
         {
@@ -22,7 +25,9 @@ namespace HexagonalTemplate.UseCases
             var foundUser = userRepository.FindByEmail(userEntity.Email);
             var passwordDb = foundUser.Password;
             jwtCore.Match(userEntity.Password, passwordDb);
-            var token = jwtCore.GenerateToken(userEntity);
+            string key = configuration["Jwt:Key"];
+            string issuer = configuration["Jwt:Issuer"];
+            var token = jwtCore.GenerateToken(key, issuer);
 
             return token;
         }

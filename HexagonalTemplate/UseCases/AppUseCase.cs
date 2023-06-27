@@ -10,22 +10,30 @@ namespace HexagonalTemplate.UseCases
     {
         IAppCore appCore;
         IAppRepository appRepository;
-        IAppJwtCore appJwtCore;
+        IJwtCore jwtCore;
+        private readonly IConfiguration configuration;
 
-        public AppUseCase(IAppCore appCore, IAppRepository appRepository, IAppJwtCore appJwtCore)
+        public AppUseCase(IAppCore appCore, IAppRepository appRepository, IJwtCore jwtCore, IConfiguration configuration)
         {
             this.appCore = appCore;
             this.appRepository = appRepository;
-            this.appJwtCore = appJwtCore;
+            this.jwtCore = jwtCore;
+            this.configuration = configuration;
         }
 
-        public string GenerateNewApp(AppEntity appEntity)
+        public dynamic GenerateNewApp(AppEntity appEntity)
         {
             appCore.ValidateApp(appEntity);
             appRepository.Create(appEntity);
-            var token = appJwtCore.GenerateToken(appEntity);
+            string key = configuration["Jwt:Key"];
+            string issuer = configuration["Jwt:Issuer"];
+            var token = jwtCore.GenerateToken(key, issuer);
 
-            return token;
+            return new
+            {
+                AppId = appEntity.AppId,
+                AppToken = token
+            };
         }
 
     }

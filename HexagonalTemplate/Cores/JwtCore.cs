@@ -15,13 +15,13 @@ namespace HexagonalTemplate.Cores
             _config = config;
         }
 
-        public string GenerateToken(UserEntity userEntity)
+        public string GenerateToken(string key, string issuer) 
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
+            var token = new JwtSecurityToken(issuer,
+              issuer,
               null,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);

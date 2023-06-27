@@ -6,7 +6,6 @@ namespace HexagonalTemplate.Ports.Ins
     public interface IJwtCore
     {
         void Match(string passwordRequest, string passwordDb);
-
-        public string GenerateToken(UserEntity userEntity);
+        public string GenerateToken(string key, string issuer);
     }
 }
