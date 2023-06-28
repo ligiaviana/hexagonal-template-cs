@@ -4,6 +4,6 @@ namespace HexagonalTemplate.Ports.Ins
 {
     public interface IAppUseCase
     {
-        public dynamic GenerateNewApp(AppEntity appEntity);
+        public IDictionary<string, object> GenerateNewApp(AppEntity appEntity);
     }
 }

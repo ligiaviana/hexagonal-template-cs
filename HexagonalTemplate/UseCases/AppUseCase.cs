@@ -21,20 +21,34 @@ namespace HexagonalTemplate.UseCases
             this.configuration = configuration;
         }
 
-        public dynamic GenerateNewApp(AppEntity appEntity)
+        public IDictionary<string, object> GenerateNewApp(AppEntity appEntity)
         {
             appCore.ValidateApp(appEntity);
             appRepository.Create(appEntity);
-            string key = configuration["Jwt:Key"];
-            string issuer = configuration["Jwt:Issuer"];
+            string key = GetJwtKeyFromAppSettingsJson();
+            string issuer = GetJwtIssuerFromAppSettingsJson();
             var token = jwtCore.GenerateToken(key, issuer);
 
-            return new
-            {
-                AppId = appEntity.AppId,
-                AppToken = token
-            };
+            return CreateAppGenerationResult(appEntity.AppId, token);
         }
 
+        private string GetJwtKeyFromAppSettingsJson()
+        {
+            return configuration["Jwt:Key"];
+        }
+
+        private string GetJwtIssuerFromAppSettingsJson()
+        {
+            return configuration["Jwt:Issuer"];
+        }
+
+        private IDictionary<string, object> CreateAppGenerationResult(int appId, string appToken)
+        {
+                return new Dictionary<string, object>
+                {
+                    { "AppId", appId },
+                    { "AppToken", appToken }
+                };
+        }
     }
 }
