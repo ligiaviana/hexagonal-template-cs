@@ -47,7 +47,7 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             }
         }
 
-        
+        [AllowAnonymous]
         [HttpPost("/Register", Name = "Register")]
         public ActionResult Register(UserEntity userEntity)
         {
@@ -90,7 +90,7 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             }
         }
 
-        
+        [AllowAnonymous]
         [HttpDelete("/Delete", Name = "Delete")]
         
         public IActionResult Delete(string email)
