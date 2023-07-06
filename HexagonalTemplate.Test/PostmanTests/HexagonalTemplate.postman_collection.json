@@ -1,0 +1,1313 @@
+{
+	"info": {
+		"_postman_id": "20a555b5-37af-43c8-93fb-dfb0463cec3b",
+		"name": "HexagonalTemplate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23896683"
+	},
+	"item": [
+		{
+			"name": "TesteIntegracao",
+			"item": [
+				{
+					"name": "https://localhost:7228/Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"Register\", jsonData.register);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"john@gmail.com\",\r\n  \"password\": \"John@gmail.com1\",\r\n  \"userId\": 1,\r\n  \"cpf\": \"00099915788\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/Register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/GetById?email=peter%40gmail.com",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"getUserByEmail\", jsonData.getUserByEmail);\r",
+									"var valorDaVariavel = pm.environment.get(\"email_test\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7228/GetById?email=john%40gmail.com",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"GetById"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "john%40gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/Delete?email=peter%40gmail.com",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7228/Delete?email=john%40gmail.com",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Delete"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "john%40gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TesteIntegracao2",
+			"item": [
+				{
+					"name": "https://localhost:7228/Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Define os dados do usuário para o registro\r",
+									"var user = {\r",
+									"    email: \"\",\r",
+									"    password: \"Amy@gmail.com1\",\r",
+									"    userId: 7,\r",
+									"    cpf: \"12233344445\"\r",
+									"};\r",
+									"\r",
+									"// Faz a requisição POST para o endpoint de registro com os dados do usuário\r",
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:7228/Register\",\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        \"Content-Type\": \"application/json\"\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: \"raw\",\r",
+									"        raw: JSON.stringify(user)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    // Verifica o status code da resposta\r",
+									"    pm.test(\"Status code is 406\", function () {\r",
+									"        pm.response.to.have.status(406);\r",
+									"    });\r",
+									"\r",
+									"    // Verifica o corpo da resposta\r",
+									"    pm.test(\"Response body is not empty\", function () {\r",
+									"        pm.expect(pm.response.text()).to.not.be.empty;\r",
+									"    });\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\": \"\",\r\n\"password\": \"Amy@gmail.com1\",\r\n\"userId\": 7,\r\n\"cpf\": \"12233344445\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/Register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"Register\", jsonData.register);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\": \"amy@gmail.com\",\r\n\"password\": \"Amy@gmail.com1\",\r\n\"userId\": 7,\r\n\"cpf\": \"12233344445\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/Register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Verifica se a mensagem de erro está presente na resposta\r",
+									"pm.test(\"Response body contains error message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"The password is invalid.\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcnlAZ21haWwuY29tIiwibmJmIjoxNjg2MDgwODM0LCJleHAiOjE2ODYwODI2MzQsImlhdCI6MTY4NjA4MDgzNH0.rnAmIKPQSUcOa3qdj_qdclJtX32C4NczPfmSxknJObk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"amy@gmail.com\",\r\n    \"password\": \"nonsense@gmail.com1\",\r\n    \"userId\": 7,\r\n    \"cpf\": \"12233344445\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Define os dados do usuário para o login\r",
+									"var user = {\r",
+									"    email: \"\",\r",
+									"    password: \"Amy@gmail.com1\",\r",
+									"    userId: 7,\r",
+									"    cpf: \"12233344445\"\r",
+									"};\r",
+									"\r",
+									"// Faz a requisição POST para o endpoint de login com os dados do usuário\r",
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:7228/Login\",\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        \"Content-Type\": \"application/json\"\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: \"raw\",\r",
+									"        raw: JSON.stringify(user)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    // Verifica o status code da resposta\r",
+									"    pm.test(\"Status code is 406\", function () {\r",
+									"        pm.response.to.have.status(406);\r",
+									"    });\r",
+									"\r",
+									"    // Verifica o corpo da resposta\r",
+									"    pm.test(\"Response body is not empty\", function () {\r",
+									"        pm.expect(pm.response.text()).to.not.be.empty;\r",
+									"    });\r",
+									"\r",
+									"    // Adicione aqui outras verificações desejadas no corpo da resposta\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\": \"\",\r\n\"password\": \"Amy@gmail.com1\",\r\n\"userId\": 7,\r\n\"cpf\": \"12233344445\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Define os dados do usuário para o login\r",
+									"var user = {\r",
+									"    email: \"amy@gmail.com\",\r",
+									"    password: \"Amy@gmail.com1\"\r",
+									"};\r",
+									"\r",
+									"// Faz a requisição POST para o endpoint de login com os dados do usuário\r",
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:7228/Login\",\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        \"Content-Type\": \"application/json\"\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: \"raw\",\r",
+									"        raw: JSON.stringify(user)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    // Verifica o status code da resposta\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    // Verifica o corpo da resposta\r",
+									"    pm.test(\"Response body is not empty\", function () {\r",
+									"        pm.expect(pm.response.text()).to.not.be.empty;\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\": \"amy@gmail.com\",\r\n\"password\": \"Amy@gmail.com1\",\r\n\"userId\": 7,\r\n\"cpf\": \"12233344445\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/GetById?email=mary%40gmail.com",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"getUserByEmail\", jsonData.getUserByEmail);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODg0MTIzODksImlzcyI6IlRlc3QuY29tIiwiYXVkIjoiVGVzdC5jb20ifQ.VPNrsE0QZexBFIUdBtGFNJgKla9yf29WcRo17XpsglU",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7228/GetByEmail?email=amy%40gmail.com",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"GetByEmail"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "amy%40gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/GetById?email=xxxyyy%40gmail.com",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData;\r",
+									"try {\r",
+									"    jsonData = JSON.parse(responseBody);\r",
+									"} catch (error) {\r",
+									"    console.error(\"Error parsing JSON:\", error);\r",
+									"    jsonData = {};\r",
+									"}\r",
+									"\r",
+									"var getUserByEmail = jsonData.getUserByEmail || null;\r",
+									"pm.environment.set(\"getUserByEmail\", getUserByEmail);\r",
+									"\r",
+									"var valorDaVariavel = pm.environment.get(\"wrong_email_test\");\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7228/GetById?email=xxxyyy%40gmail.com",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"GetById"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "xxxyyy%40gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/Delete?email=mary%40gmail.com",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7228/Delete?email=amy%40gmail.com",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Delete"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "amy%40gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AppTesteIntegracao",
+			"item": [
+				{
+					"name": "https://localhost:7228/GenerateApp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code é 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"appId\": 42,\r\n  \"appName\": \"\",\r\n  \"activeChannels\": {\r\n    \"activeChannelsId\": 42,\r\n    \"webPush\": true,\r\n    \"email\": true,\r\n    \"sms\": true\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/GenerateApp",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"GenerateApp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:7228/GenerateApp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verificar status code 200\r",
+									"pm.test(\"Status code\", function () {\r",
+									"    pm.response.to.have.status(200); // Verifica se o status code é 200\r",
+									"});\r",
+									"\r",
+									"// Verificar estrutura do resultado\r",
+									"pm.test(\"Response structure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Verifica se os campos AppId e AppToken estão presentes no resultado\r",
+									"    pm.expect(jsonData).to.have.property('AppId');\r",
+									"    pm.expect(jsonData).to.have.property('AppToken');\r",
+									"\r",
+									"    // Verifica se os campos AppId e AppToken não são nulos\r",
+									"    pm.expect(jsonData.AppId).to.not.be.null;\r",
+									"    pm.expect(jsonData.AppToken).to.not.be.null;\r",
+									"});\r",
+									"\r",
+									"// Verificar tipos de dados\r",
+									"pm.test(\"Data types\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Verifica se o AppId é um número inteiro\r",
+									"    pm.expect(jsonData.AppId).to.be.a('number');\r",
+									"\r",
+									"    // Verifica se o AppToken é uma string\r",
+									"    pm.expect(jsonData.AppToken).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"appId\": 36,\r\n  \"appName\": \"MBenzOpen\",\r\n  \"activeChannels\": {\r\n    \"activeChannelsId\": 36,\r\n    \"webPush\": true,\r\n    \"email\": true,\r\n    \"sms\": true\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7228/GenerateApp",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"GenerateApp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RefatoradoTesteIntegracao2",
+			"item": [
+				{
+					"name": "test: /Register  expected:406",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Preenche o corpo da solicitação com as variáveis do ambiente\r",
+									"pm.request.body.raw = JSON.stringify({\r",
+									"    email: pm.environment.get(\"406_empty_email\"),\r",
+									"    password: pm.environment.get(\"password\"),\r",
+									"    userId: pm.environment.get(\"userId\"),\r",
+									"    cpf: pm.environment.get(\"cpf\")\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 406\", function () {\r",
+									"    pm.response.to.have.status(406);\r",
+									"});\r",
+									"\r",
+									"// Verifica se a mensagem de erro está presente na resposta\r",
+									"pm.test(\"Response body contains error message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"email should be informed.\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7228/Register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Register  expected:200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.request.body.raw = JSON.stringify({\r",
+									"    email: pm.environment.get(\"valid_email\"),\r",
+									"    password: pm.environment.get(\"password\"),\r",
+									"    userId: pm.environment.get(\"userId\"),\r",
+									"    cpf: pm.environment.get(\"cpf\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"Register\", jsonData.register);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7228/Register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Login expected:401",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Preenche o corpo da solicitação com as variáveis do ambiente\r",
+									"pm.request.body.raw = JSON.stringify({\r",
+									"    email: pm.environment.get(\"valid_email\"),\r",
+									"    password: pm.environment.get(\"invalid_password\"),\r",
+									"    userId: pm.environment.get(\"userId\"),\r",
+									"    cpf: pm.environment.get(\"cpf\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Verifica se a mensagem de erro está presente na resposta\r",
+									"pm.test(\"Response body contains error message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"The password is invalid.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7228/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Login expected:406",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Preenche o corpo da solicitação com as variáveis do ambiente\r",
+									"pm.request.body.raw = JSON.stringify({\r",
+									"    email: pm.environment.get(\"406_empty_email\"),\r",
+									"    password: pm.environment.get(\"password\"),\r",
+									"    userId: pm.environment.get(\"userId\"),\r",
+									"    cpf: pm.environment.get(\"cpf\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 406\", function () {\r",
+									"    pm.response.to.have.status(406);\r",
+									"});\r",
+									"\r",
+									"// Verifica se a mensagem de erro está presente na resposta\r",
+									"pm.test(\"Response body contains error message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"email should be informed.\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7228/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Login expected:200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Preenche o corpo da solicitação com as variáveis do ambiente\r",
+									"pm.request.body.raw = JSON.stringify({\r",
+									"    email: pm.environment.get(\"valid_email\"),\r",
+									"    password: pm.environment.get(\"password\"),\r",
+									"    userId: pm.environment.get(\"userId\"),\r",
+									"    cpf: pm.environment.get(\"cpf\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verifica o corpo da resposta\r",
+									"    pm.test(\"Response body is not empty\", function () {\r",
+									"        pm.expect(pm.response.text()).to.not.be.empty;\r",
+									"    });\r",
+									"\r",
+									"    // Extrai o token de autenticação da resposta e armazena na variável de ambiente\r",
+									"    var responseBody = pm.response.text();\r",
+									"    var tokenStartIndex = responseBody.indexOf('eyJ'); // Localiza o início do token\r",
+									"    var tokenEndIndex = responseBody.lastIndexOf('.') + 44; // Localiza o fim do token\r",
+									"    var token = responseBody.substring(tokenStartIndex, tokenEndIndex);\r",
+									"    pm.environment.set(\"auth_token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7228/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7228",
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Get expected:200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"url\", `https://localhost:7228/GetByEmail?email=${pm.variables.get(\"valid_email\")}`);\r",
+									"\r",
+									"// Obtém o token de autenticação do ambiente\r",
+									"var authToken = pm.environment.get(\"auth_token\");\r",
+									"\r",
+									"// Define o cabeçalho da solicitação GET com o token de autenticação\r",
+									"pm.request.headers.add({\r",
+									"    key: \"Authorization\",\r",
+									"    value: \"Bearer \" + authToken\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verifica o corpo da resposta\r",
+									"pm.test(\"Response body is not empty\", function () {\r",
+									"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Get expected:404",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Define a URL com a variável de ambiente \"wrong_email\"\r",
+									"pm.variables.set(\"url\", `https://localhost:7228/GetById?email=${pm.variables.get(\"wrong_email\")}`);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test: /Delete expected:200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Define a URL com a variável de ambiente \"valid_email\"\r",
+									"pm.variables.set(\"url\", `https://localhost:7228/Delete?email=${pm.variables.get(\"valid_email\")}`);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica o status code da resposta\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
