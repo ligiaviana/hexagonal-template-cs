@@ -1,21 +1,24 @@
-﻿using HexagonalTemplate.Adapters.SqliteAdapters;
-using HexagonalTemplate.Cores;
-using HexagonalTemplate.Models.Entities;
+﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
+using OpenQA.Selenium;
 
 namespace HexagonalTemplate.UseCases
 {
     public class AppUseCase : IAppUseCase
     {
         IAppCore appCore;
+        IUserRepository userRepository;
         IAppRepository appRepository;
         IJwtCore jwtCore;
         private readonly IConfiguration configuration;
+         
 
-        public AppUseCase(IAppCore appCore, IAppRepository appRepository, IJwtCore jwtCore, IConfiguration configuration)
+        public AppUseCase(IAppCore appCore, IUserRepository userRepository, IAppRepository appRepository, 
+            IJwtCore jwtCore, IConfiguration configuration)
         {
             this.appCore = appCore;
+            this.userRepository = userRepository;
             this.appRepository = appRepository;
             this.jwtCore = jwtCore;
             this.configuration = configuration;
@@ -49,6 +52,40 @@ namespace HexagonalTemplate.UseCases
                     { "AppId", appId },
                     { "AppToken", appToken }
                 };
+        }
+
+        public object CreateTeams(int userId, int appId)
+        {
+            var user = userRepository.FindById(userId);
+            var app = appRepository.FindById(appId);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found.");
+            }
+
+            if (app == null)
+            {
+                throw new NotFoundException("App not found");
+            }
+
+            bool userInTeam = appRepository.CheckUserInTeam(userId, appId);
+            if (userInTeam)
+            {
+                throw new InvalidOperationException("User is already in the team.");
+            }
+
+            appRepository.AddUserToTeam(userId, appId);
+
+            var appUserTeam = appRepository.GetAppUserTeam(userId, appId);
+
+            return new
+            {
+                user_id = appUserTeam.UserId,
+                app_id = appUserTeam.AppId,
+                Inicial_date = appUserTeam.InicialDate,
+                active = appUserTeam.Active
+            };
         }
     }
 }

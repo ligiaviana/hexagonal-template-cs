@@ -6,6 +6,7 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
     public class UserRepository : IUserRepository
     {
         private readonly HexagonalDbContext _context;
+
         public UserRepository(HexagonalDbContext context)
         {
             _context = context;
@@ -21,6 +22,12 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
         public UserEntity FindByEmail(string email)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            return user;
+        }
+
+        public UserEntity FindById(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
             return user;
         }
 

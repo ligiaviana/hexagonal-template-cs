@@ -6,6 +6,9 @@ namespace HexagonalTemplate.Ports.Outs
     {
         public AppEntity Create(AppEntity appEntity);
         public AppEntity FindById(int id);
+        public bool CheckUserInTeam(int userId, int appId);
+        public void AddUserToTeam(int userId, int appId);
+        public AppUserTeamEntity GetAppUserTeam(int userId, int appId);
 
     }
 }

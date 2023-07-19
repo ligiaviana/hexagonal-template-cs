@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HexagonalTemplate.Migrations
 {
     [DbContext(typeof(HexagonalDbContext))]
-    [Migration("20230516191340_CreateUsersTable")]
-    partial class CreateUsersTable
+    [Migration("20230717191610_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
