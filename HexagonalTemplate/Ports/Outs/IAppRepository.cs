@@ -9,6 +9,7 @@ namespace HexagonalTemplate.Ports.Outs
         public bool CheckUserInTeam(int userId, int appId);
         public void AddUserToTeam(int userId, int appId);
         public AppUserTeamEntity GetAppUserTeam(int userId, int appId);
+        public List<AppUserTeamEntity> GetTeams();
 
     }
 }

@@ -16,6 +16,7 @@ builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<IFindUseCase, FindUseCase>();
 builder.Services.AddScoped<IFindAppUseCase, FindAppUseCase>();
 builder.Services.AddScoped<IAppUseCase, AppUseCase>();
+builder.Services.AddScoped<IFindTeamsUseCase, FindTeamsUseCase>();
 builder.Services.AddScoped<IDeleteUseCase, DeleteUseCase>();
 builder.Services.AddScoped<ILogCore, LogCore>();
 builder.Services.AddScoped<IUserCore, UserCore>();

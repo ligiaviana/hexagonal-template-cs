@@ -65,5 +65,10 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
             _appContext.AppUserTeams.Add(appUserTeam);
             _appContext.SaveChanges();
         }
+
+        public List<AppUserTeamEntity> GetTeams()
+        {
+            return _appContext.AppUserTeams.ToList();
+        }
     }
 }
