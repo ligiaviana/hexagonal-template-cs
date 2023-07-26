@@ -4,6 +4,6 @@ namespace HexagonalTemplate.Ports.Ins
 {
     public interface IFindTeamsUseCase
     {
-        public IDictionary<string, object> GetTeams();
+        public object GetTeams();
     }
 }

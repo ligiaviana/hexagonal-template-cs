@@ -89,6 +89,7 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             }
         }
 
+        [Authorize]
         [HttpGet("/GetTeams", Name = "GetTeams")]
         public ActionResult GetTeams()
         {

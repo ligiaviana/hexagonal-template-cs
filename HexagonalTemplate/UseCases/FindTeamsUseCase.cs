@@ -1,8 +1,6 @@
-﻿using HexagonalTemplate.Models.Entities;
-using HexagonalTemplate.Ports.Ins;
+﻿using HexagonalTemplate.Ports.Ins;
 using HexagonalTemplate.Ports.Outs;
-using System.Collections.Generic;
-using System.Linq;
+using OpenQA.Selenium;
 
 namespace HexagonalTemplate.UseCases
 {
@@ -16,31 +14,38 @@ namespace HexagonalTemplate.UseCases
             this.appRepository = appRepository;
             this.userRepository = userRepository;
         }
-
-        public IDictionary<string, object> GetTeams()
+        public object GetTeams()
         {
             var teams = appRepository.GetTeams();
-            if (teams == null)
+
+            if (teams == null || !teams.Any())
             {
-                return new Dictionary<string, object>
-                {
-                    { "app_id", 0 },
-                    { "users", new List<object>() }
-                };
+                throw new NotFoundException("Teams not found");
             }
 
-            var users = teams.Select(aut => new Dictionary<string, object>
-            {
-                { "user_id", aut.UserId.ToString() },
-                { "Inicial_date", aut.InicialDate.ToString("dd/MM/yyyy HH:mm:ss") },
-                { "active", aut.Active }
-            }).ToList();
+            var groupedTeams = teams.GroupBy(team => team.AppId).ToList();
 
-            return new Dictionary<string, object>
+            var result = new List<object>();
+
+            foreach (var group in groupedTeams)
             {
-                { "app_id", teams.FirstOrDefault()?.AppId ?? 0 },
-                { "users", users }
-            };
+                var users = group.Select(team => new
+                {
+                    user_id = team.UserId,
+                    Inicial_date = team.InicialDate,
+                    active = team.Active
+                }).ToList();
+
+                var appTeam = new
+                {
+                    app_id = group.Key,
+                    users
+                };
+
+                result.Add(appTeam);
+            }
+
+            return result;
         }
     }
 }
