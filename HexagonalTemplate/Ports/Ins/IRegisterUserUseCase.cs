@@ -3,8 +3,8 @@ using HexagonalTemplate.Models.Entities;
 
 namespace HexagonalTemplate.Ports.Ins
 {
-    public interface ILoginUseCase
+    public interface IRegisterUserUseCase
     {
-        public string Login(UserEntity userEntity);
+        public UserEntity Register(UserEntity userEntity);
     }
 }

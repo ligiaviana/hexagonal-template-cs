@@ -4,11 +4,11 @@ using HexagonalTemplate.Ports.Outs;
 
 namespace HexagonalTemplate.UseCases
 {
-    public class FindUseCase : IFindUseCase
+    public class FindUserUseCase : IFindUserUseCase
     {
         IUserRepository userRepository;
 
-        public FindUseCase (IUserRepository userRepository)
+        public FindUserUseCase (IUserRepository userRepository)
         {
             this.userRepository = userRepository;
         }

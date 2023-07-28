@@ -11,16 +11,19 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IRegisterUseCase, RegisterUseCase>();
-builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
-builder.Services.AddScoped<IFindUseCase, FindUseCase>();
+builder.Services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+builder.Services.AddScoped<ILoginUserUseCase, LoginUserUseCase>();
+builder.Services.AddScoped<IFindUserUseCase, FindUserUseCase>();
 builder.Services.AddScoped<IFindAppUseCase, FindAppUseCase>();
-builder.Services.AddScoped<IAppUseCase, AppUseCase>();
-builder.Services.AddScoped<IFindTeamsUseCase, FindTeamsUseCase>();
-builder.Services.AddScoped<IDeleteUseCase, DeleteUseCase>();
+builder.Services.AddScoped<IGenerateAppUseCase, GenerateAppUseCase>();
+builder.Services.AddScoped<ICreateTeamsAppUserUseCase, CreateTeamsAppUserUseCase>();
+builder.Services.AddScoped<IFindTeamsAppUserUseCase, FindTeamsAppUserUseCase>();
+builder.Services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
 builder.Services.AddScoped<ILogCore, LogCore>();
 builder.Services.AddScoped<IUserCore, UserCore>();
-builder.Services.AddScoped<IAppCore, AppCore>();
+builder.Services.AddScoped<IGenerateAppCore, GenerateAppCore>();
+builder.Services.AddScoped<ICreateTeamsAppUserCore, CreateTeamsAppUserCore>();
+builder.Services.AddScoped<IFindTeamsAppUserCore, FindTeamsAppUserCore>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAppRepository, AppRepository>();
 

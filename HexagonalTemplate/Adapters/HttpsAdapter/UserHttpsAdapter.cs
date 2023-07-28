@@ -11,14 +11,14 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
     [Authorize]
     public class UserHttpsAdapter : ControllerBase
     {
-        protected IRegisterUseCase registerUseCase;
-        protected ILoginUseCase loginUseCase;
+        protected IRegisterUserUseCase registerUseCase;
+        protected ILoginUserUseCase loginUseCase;
         protected IUserRepository userRepository;
-        protected IFindUseCase findUseCase;
-        protected IDeleteUseCase deleteUseCase;
+        protected IFindUserUseCase findUseCase;
+        protected IDeleteUserUseCase deleteUseCase;
 
-        public UserHttpsAdapter(IRegisterUseCase registerUseCase, ILoginUseCase loginUseCase, 
-            IUserRepository userRepository, IFindUseCase findUseCase, IDeleteUseCase deleteUseCase)
+        public UserHttpsAdapter(IRegisterUserUseCase registerUseCase, ILoginUserUseCase loginUseCase, 
+            IUserRepository userRepository, IFindUserUseCase findUseCase, IDeleteUserUseCase deleteUseCase)
         {
             this.registerUseCase = registerUseCase;
             this.loginUseCase = loginUseCase;

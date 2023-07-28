@@ -2,7 +2,7 @@
 
 namespace HexagonalTemplate.Ports.Ins
 {
-    public interface IFindTeamsUseCase
+    public interface IFindTeamsAppUserUseCase
     {
         public object GetTeams();
     }

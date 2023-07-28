@@ -42,17 +42,8 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
         public void AddUserToTeam(int userId, int appId)
         {
             var user = _userContext.Users.FirstOrDefault(u => u.UserId == userId);
-            
-            if (user == null)
-            {
-                throw new NotFoundException("User not found.");
-            }
 
             var app = _appContext.Apps.FirstOrDefault(a => a.AppId == appId);
-            if (app == null)
-            {
-                throw new NotFoundException("App not found.");
-            }
 
             var appUserTeam = new AppUserTeamEntity
             {

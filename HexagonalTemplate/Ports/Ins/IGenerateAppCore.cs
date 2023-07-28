@@ -2,8 +2,10 @@
 
 namespace HexagonalTemplate.Ports.Ins
 {
-    public interface IAppCore
+    public interface IGenerateAppCore
     {
         public void ValidateApp(AppEntity appEntity);
+
+        public IDictionary<string, object> CreateAppGenerationResult(int appId, string appToken);
     }
 }

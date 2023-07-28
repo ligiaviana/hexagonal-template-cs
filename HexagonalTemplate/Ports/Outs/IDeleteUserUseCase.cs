@@ -2,7 +2,7 @@
 
 namespace HexagonalTemplate.Ports.Outs
 {
-    public interface IDeleteUseCase
+    public interface IDeleteUserUseCase
     {
         public void DeleteByEmail(string email);
     }

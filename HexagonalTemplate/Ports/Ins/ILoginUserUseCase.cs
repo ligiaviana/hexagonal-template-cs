@@ -1,11 +1,10 @@
 ﻿using HexagonalTemplate.Models.Dtos;
 using HexagonalTemplate.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
 
 namespace HexagonalTemplate.Ports.Ins
 {
-    public interface IFindUseCase
+    public interface ILoginUserUseCase
     {
-        public UserEntity GetUserByEmail(string email);
+        public string Login(UserEntity userEntity);
     }
 }

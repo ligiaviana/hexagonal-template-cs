@@ -3,11 +3,11 @@ using HexagonalTemplate.Ports.Outs;
 
 namespace HexagonalTemplate.UseCases
 {
-    public class DeleteUseCase : IDeleteUseCase
+    public class DeleteUserUseCase : IDeleteUserUseCase
     {
         IUserRepository userRepository;
 
-        public DeleteUseCase(IUserRepository userRepository)
+        public DeleteUserUseCase(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
         }

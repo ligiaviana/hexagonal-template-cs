@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace HexagonalTemplate.UseCases
 {
-    public class LoginUseCase : ILoginUseCase
+    public class LoginUserUseCase : ILoginUserUseCase
     {
         IUserCore userCore;
         IJwtCore jwtCore;
         IUserRepository userRepository;
         private readonly IConfiguration configuration;
 
-        public LoginUseCase(IUserCore userCore, IJwtCore jwtCore, IUserRepository userRepository, IConfiguration configuration)
+        public LoginUserUseCase(IUserCore userCore, IJwtCore jwtCore, IUserRepository userRepository, IConfiguration configuration)
         {
             this.userCore = userCore;
             this.jwtCore = jwtCore;

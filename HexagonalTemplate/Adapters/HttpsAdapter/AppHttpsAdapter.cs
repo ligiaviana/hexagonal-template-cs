@@ -1,5 +1,6 @@
 ﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
+using HexagonalTemplate.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenQA.Selenium;
@@ -11,15 +12,18 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
     [Route("[controller]")]
     public class AppHttpsAdapter : ControllerBase
     {
-        protected IAppUseCase appUseCase;
+        protected IGenerateAppUseCase appUseCase;
         protected IFindAppUseCase findAppUseCase;
-        protected IFindTeamsUseCase findTeamsUseCase;
+        protected IFindTeamsAppUserUseCase findTeamsUseCase;
+        protected ICreateTeamsAppUserUseCase createTeamsAppUserUseCase;
 
-        public AppHttpsAdapter(IAppUseCase appUseCase, IFindAppUseCase findAppUseCase, IFindTeamsUseCase findTeamsUseCase)
+        public AppHttpsAdapter(IGenerateAppUseCase appUseCase, IFindAppUseCase findAppUseCase, IFindTeamsAppUserUseCase findTeamsUseCase, 
+            ICreateTeamsAppUserUseCase createTeamsAppUserUseCase)
         {
             this.appUseCase = appUseCase;
             this.findAppUseCase = findAppUseCase;
             this.findTeamsUseCase = findTeamsUseCase;
+            this.createTeamsAppUserUseCase = createTeamsAppUserUseCase;
         }
 
         [HttpPost("/GenerateApp", Name = "GenerateApp")]
@@ -64,7 +68,7 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
         {
             try
             {
-                var appUserTeam = appUseCase.CreateTeams(userId, appId);
+                var appUserTeam = createTeamsAppUserUseCase.CreateTeams(userId, appId);
                 return Ok(appUserTeam);
             }
             catch (NotFoundException nf)

@@ -3,7 +3,7 @@ using HexagonalTemplate.Ports.Ins;
 
 namespace HexagonalTemplate.Cores
 {
-    public class AppCore : IAppCore
+    public class GenerateAppCore : IGenerateAppCore
     {
         public void ValidateApp(AppEntity appEntity)
         {
@@ -12,6 +12,15 @@ namespace HexagonalTemplate.Cores
 
             if (string.IsNullOrEmpty(appEntity.AppName))
                 throw new ArgumentNullException("AppName should be informed.");
+        }
+
+        public IDictionary<string, object> CreateAppGenerationResult(int appId, string appToken)
+        {
+            return new Dictionary<string, object>
+                {
+                    { "AppId", appId },
+                    { "AppToken", appToken }
+                };
         }
     }
 }

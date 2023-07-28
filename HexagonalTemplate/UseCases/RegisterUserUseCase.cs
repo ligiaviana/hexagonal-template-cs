@@ -4,13 +4,13 @@ using HexagonalTemplate.Ports.Outs;
 
 namespace HexagonalTemplate.UseCases
 {
-    public class RegisterUseCase : IRegisterUseCase
+    public class RegisterUserUseCase : IRegisterUserUseCase
     {
         IUserCore userCore;
         IUserRepository userRepository;
         ILogCore logCore;
 
-        public RegisterUseCase(IUserCore userCore, IUserRepository userRepository, ILogCore logCore)
+        public RegisterUserUseCase(IUserCore userCore, IUserRepository userRepository, ILogCore logCore)
         {
             this.userCore = userCore;
             this.userRepository = userRepository;
