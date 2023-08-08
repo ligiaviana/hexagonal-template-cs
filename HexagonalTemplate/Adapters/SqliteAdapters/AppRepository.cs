@@ -1,6 +1,7 @@
 ﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Outs;
 using OpenQA.Selenium;
+using Xamarin.Essentials;
 
 namespace HexagonalTemplate.Adapters.SqliteAdapters
 {
@@ -60,6 +61,29 @@ namespace HexagonalTemplate.Adapters.SqliteAdapters
         public List<AppUserTeamEntity> GetTeams()
         {
             return _appContext.AppUserTeams.ToList();
+        }
+
+        public void DeleteAppById(int id)
+        {
+            var app = _appContext.Apps.FirstOrDefault(u => u.AppId == id);
+
+            if (app != null)
+            {
+                _appContext.Apps.Remove(app);
+                _appContext.SaveChanges();
+            }
+        }
+
+        public void DeleteTeams(int userId, int appId)
+        {
+            var appTeams = _appContext.AppUserTeams.FirstOrDefault(u => u.UserId == userId && u.AppId == appId);
+
+            if(appTeams != null)
+            {
+                _appContext.AppUserTeams.Remove(appTeams);
+                _appContext.SaveChanges();
+            }
+
         }
     }
 }

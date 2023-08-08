@@ -1,5 +1,6 @@
 ﻿using HexagonalTemplate.Models.Entities;
 using HexagonalTemplate.Ports.Ins;
+using HexagonalTemplate.Ports.Outs;
 using HexagonalTemplate.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,18 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
         protected IFindAppUseCase findAppUseCase;
         protected IFindTeamsAppUserUseCase findTeamsUseCase;
         protected ICreateTeamsAppUserUseCase createTeamsAppUserUseCase;
+        protected IDeleteAppUseCase deleteAppUseCase;
+        protected IDeleteTeamsAppUserUseCase deleteTeamsAppUserUseCase;
 
         public AppHttpsAdapter(IGenerateAppUseCase appUseCase, IFindAppUseCase findAppUseCase, IFindTeamsAppUserUseCase findTeamsUseCase, 
-            ICreateTeamsAppUserUseCase createTeamsAppUserUseCase)
+            ICreateTeamsAppUserUseCase createTeamsAppUserUseCase, IDeleteAppUseCase deleteAppUseCase, IDeleteTeamsAppUserUseCase deleteTeamsAppUserUseCase)
         {
             this.appUseCase = appUseCase;
             this.findAppUseCase = findAppUseCase;
             this.findTeamsUseCase = findTeamsUseCase;
             this.createTeamsAppUserUseCase = createTeamsAppUserUseCase;
+            this.deleteAppUseCase = deleteAppUseCase;
+            this.deleteTeamsAppUserUseCase = deleteTeamsAppUserUseCase;
         }
 
         [HttpPost("/GenerateApp", Name = "GenerateApp")]
@@ -113,6 +118,42 @@ namespace HexagonalTemplate.Adapters.HttpsAdapter
             catch (Exception e)
             {
                 return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpDelete("/DeleteAppById", Name = "DeleteAppById")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                deleteAppUseCase.DeleteAppById(id);
+                return Ok();
+            }
+            catch (ArgumentNullException nf)
+            {
+                return StatusCode(404, nf.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("/DeleteTeams", Name = "DeleteTeams")]
+        public IActionResult Delete(int userId, int appId)
+        {
+            try
+            {
+                deleteTeamsAppUserUseCase.DeleteTeams(userId, appId);
+                return Ok();
+            }
+            catch (ArgumentNullException nf)
+            {
+                return StatusCode(404, nf.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }

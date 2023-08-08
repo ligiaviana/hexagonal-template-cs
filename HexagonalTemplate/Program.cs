@@ -19,6 +19,8 @@ builder.Services.AddScoped<IGenerateAppUseCase, GenerateAppUseCase>();
 builder.Services.AddScoped<ICreateTeamsAppUserUseCase, CreateTeamsAppUserUseCase>();
 builder.Services.AddScoped<IFindTeamsAppUserUseCase, FindTeamsAppUserUseCase>();
 builder.Services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
+builder.Services.AddScoped<IDeleteAppUseCase, DeleteAppUseCase>();
+builder.Services.AddScoped<IDeleteTeamsAppUserUseCase, DeleteTeamsAppUserUseCase>();
 builder.Services.AddScoped<ILogCore, LogCore>();
 builder.Services.AddScoped<IUserCore, UserCore>();
 builder.Services.AddScoped<IGenerateAppCore, GenerateAppCore>();

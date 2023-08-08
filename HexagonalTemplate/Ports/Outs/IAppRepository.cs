@@ -10,6 +10,7 @@ namespace HexagonalTemplate.Ports.Outs
         public void AddUserToTeam(int userId, int appId);
         public AppUserTeamEntity GetAppUserTeam(int userId, int appId);
         public List<AppUserTeamEntity> GetTeams();
-
+        public void DeleteAppById(int id);
+        public void DeleteTeams(int userId, int appId);
     }
 }
